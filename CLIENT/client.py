@@ -10,6 +10,7 @@ from sys import argv
 
 PORT = 8000
 RESOLUTION = (640, 480)
+FPS = 32
 
 
 def debug(x: str):
@@ -28,10 +29,12 @@ def serialize(img: ndarray) -> bytes:
 
 if __name__ == "__main__":
 
-    debug("Initializing camera object...")
+    debug("Initializing camera object and capture settings...")
     camera = PiCamera()
     camera.resolution = RESOLUTION
-    camera.framerate = 32
+    camera.framerate = FPS
+
+    debug("Initializing capture buffer...")
     raw_capture = PiRGBArray(camera, size=RESOLUTION)
 
     debug("Creating socket object...")
