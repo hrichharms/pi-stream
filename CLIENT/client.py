@@ -28,26 +28,22 @@ def serialize(img: ndarray) -> bytes:
 
 if __name__ == "__main__":
 
-    # create socket object
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((get_ip(), PORT))
-
-    # connect to server
-    s.connect((argv[1], argv[2]))
-
-    # get camera object
+    debug("Initializing camera object...")
     camera = PiCamera()
-
-    # set camera resolution
     camera.resolution = RESOLUTION
-
-    # set fps
     camera.framerate = 32
-
-    # array to store camera frame data
     raw_capture = PiRGBArray(camera, size=RESOLUTION)
 
-    # continous capture loop
+    debug("Creating socket object...")
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    debug(f"Binding socket to {get_ip()}:{PORT}...")
+    s.bind((get_ip(), PORT))
+
+    debug(f"Connecting to server at {argv[1]}:{argv[2]}...")
+    s.connect((argv[1], int(argv[2])))
+
+    debug("Starting frame send loop...")
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
         # serialize and send the current frame to the viewing server
