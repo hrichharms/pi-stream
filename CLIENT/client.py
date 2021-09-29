@@ -23,10 +23,6 @@ def get_ip():
     return s.getsockname()[0]
 
 
-def serialize(img: ndarray) -> bytes:
-    return "|".join(["*".join([",".join(str(channel) for channel in pixel) for pixel in row]) for row in img.tolist()]).encode()
-
-
 if __name__ == "__main__":
 
     debug("Initializing camera object and capture settings...")
@@ -50,7 +46,7 @@ if __name__ == "__main__":
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
         debug("Serializing and sending current frame to server...")
-        s.send(serialize(frame.array))
+        s.send(frame.array.tobtes())
 
-        # clear raw capture array for next frame
+        debug("Truncating frame buffer for next frame...")
         raw_capture.truncate(0)
