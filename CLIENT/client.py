@@ -46,7 +46,7 @@ if __name__ == "__main__":
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
         debug("Serializing and sending current frame to server...")
-        print(frame.array.shape[1], frame.array.shape[0])
+        print(frame.array.dtype)
         s.send(frame.array.tobytes())
 
         debug("Truncating frame buffer for next frame...")
