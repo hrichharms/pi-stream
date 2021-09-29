@@ -49,7 +49,7 @@ if __name__ == "__main__":
     debug("Starting frame send loop...")
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
-        # serialize and send the current frame to the viewing server
+        debug("Serializing and sending current frame to server...")
         s.send(serialize(frame.array))
 
         # clear raw capture array for next frame
