@@ -1,9 +1,7 @@
 from picamera.array import PiRGBArray
 from picamera import PiCamera
-import time
-import cv2
-import socket
-import datetime
+from socket import socket, AF_INET, SOCK_DGRAM
+from datetime import datetime
 from numpy import ndarray
 from sys import argv
 import pickle
@@ -16,11 +14,11 @@ FPS = 32
 
 
 def debug(x: str):
-    print(str(datetime.datetime.now()).split()[1].split(".")[0], x)
+    print(str(datetime.now()).split()[1].split(".")[0], x)
 
 
 def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s = socket(AF_INET, SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
 

@@ -1,12 +1,9 @@
-import socket
-import datetime
-import numpy
-import cv2
-import pickle
-import struct
-
-
-PORT = 8000
+from socket import socket, AF_INET, SOCK_STREAM, SOCK_DGRAM
+from datetime import datetime
+from cv2 import imshow, waitKey
+from pickle import loads
+from struct import unpack
+from sys import argv
 
 
 def debug(x: str):
@@ -14,7 +11,7 @@ def debug(x: str):
 
 
 def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s = socket(AF_INET, SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
 
@@ -22,10 +19,10 @@ def get_ip():
 if __name__ == "__main__":
 
     debug("Creating socket object...")
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s = socket(AF_INET, SOCK_STREAM)
 
-    debug(f"Binding socket to {get_ip()}:{PORT}...")
-    s.bind((get_ip(), PORT))
+    debug(f"Binding socket to {get_ip()}:{argv[1]}...")
+    s.bind((get_ip(), int(argv[1])))
 
     debug("Awaiting client connection...")
     s.listen(1)
@@ -38,7 +35,7 @@ if __name__ == "__main__":
         debug("Receiving next frame...")
         while len(data) < 4:
             data += conn.recv(4096)
-        message_size = struct.unpack("I", data[:4])[0]
+        message_size = unpack("I", data[:4])[0]
         data = data[4:]
 
         while len(data) < message_size:
@@ -46,8 +43,8 @@ if __name__ == "__main__":
         frame_data, data = data[:message_size], data[message_size:]
 
         debug("Deserializing frame data...")
-        frame = pickle.loads(frame_data)
+        frame = loads(frame_data)
 
         debug("Rendering processed frame...")
-        cv2.imshow("Frame", frame)
-        cv2.waitKey(1)
+        imshow("Frame", frame)
+        waitKey(1)
