@@ -6,6 +6,8 @@ import socket
 import datetime
 from numpy import ndarray
 from sys import argv
+import pickle
+import struct
 
 
 PORT = 8000
@@ -46,7 +48,9 @@ if __name__ == "__main__":
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
         debug("Serializing and sending current frame to server...")
-        s.send(frame.array.tobytes())
+        data = pickle.dumps(frame.array)
+        message_size = struct.pack("L", len(data))
+        s.send(message_size + data)
 
         debug("Truncating frame buffer for next frame...")
         raw_capture.truncate(0)
