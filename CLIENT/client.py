@@ -34,7 +34,7 @@ if __name__ == "__main__":
     raw_capture = PiRGBArray(camera, size=RESOLUTION)
 
     debug("Creating socket object...")
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s = socket(AF_INET, SOCK_STREAM)
 
     debug(f"Binding socket to {get_ip()}:{PORT}...")
     s.bind((get_ip(), PORT))
