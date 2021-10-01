@@ -4,8 +4,8 @@ from socket import socket, AF_INET, SOCK_DGRAM
 from datetime import datetime
 from numpy import ndarray
 from sys import argv
-import pickle
-import struct
+from pickle import dumps
+from struct import pack
 
 
 PORT = 8000
