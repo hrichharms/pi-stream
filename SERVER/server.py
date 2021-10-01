@@ -7,7 +7,7 @@ from sys import argv
 
 
 def debug(x: str):
-    print(str(datetime.datetime.now()).split()[1].split(".")[0], x)
+    print(str(datetime.now()).split()[1].split(".")[0], x)
 
 
 def get_ip():
