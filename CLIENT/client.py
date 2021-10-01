@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
         debug("Serializing and sending current frame to server...")
         data = pickle.dumps(frame.array)
-        message_size = struct.pack("L", len(data))
+        message_size = struct.pack("I", len(data))
         s.send(message_size + data)
 
         debug("Truncating frame buffer for next frame...")
