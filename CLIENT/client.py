@@ -46,8 +46,8 @@ if __name__ == "__main__":
     for frame in camera.capture_continuous(raw_capture, format="bgr", use_video_port=True):
 
         debug("Serializing and sending current frame to server...")
-        data = pickle.dumps(frame.array)
-        message_size = struct.pack("I", len(data))
+        data = dumps(frame.array)
+        message_size = pack("I", len(data))
         s.send(message_size + data)
 
         debug("Truncating frame buffer for next frame...")
